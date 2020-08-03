@@ -30,7 +30,7 @@ import com.wrbug.developerhelper.ui.activity.main.viewmodel.MainViewModel
 import com.wrbug.developerhelper.ui.activity.xposed.xposedsetting.XposedSettingActivity
 import com.wrbug.developerhelper.ui.widget.settingitemview.SettingItemView
 import com.wrbug.developerhelper.util.DeviceUtils
-import com.wrbug.developerhelper.util.UpdateUtils
+//import com.wrbug.developerhelper.util.UpdateUtils
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -155,29 +155,29 @@ class MainActivity : BaseVMActivity<MainViewModel>() {
         }
         .create().show()
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
-    }
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//
+//    }
 
     private fun checkUpdate(showSnack: Boolean = false) {
-        if (showSnack) {
-            showSnack(getString(R.string.checking_update))
-        }
-        UpdateUtils.checkUpdate(object : Callback<VersionInfo> {
-            override fun onSuccess(data: VersionInfo) {
-                if (BuildConfig.VERSION_NAME == data.versionName) {
-                    showSnack(getString(R.string.no_new_version))
-                    return
-                }
-                showUpdateDialog(data)
-            }
-
-            override fun onFailed(msg: String) {
-                if (showSnack) {
-                    showSnack(getString(R.string.check_update_failed))
-                }
-            }
-        })
+//        if (showSnack) {
+//            showSnack(getString(R.string.checking_update))
+//        }
+//        UpdateUtils.checkUpdate(object : Callback<VersionInfo> {
+//            override fun onSuccess(data: VersionInfo) {
+//                if (BuildConfig.VERSION_NAME == data.versionName) {
+//                    showSnack(getString(R.string.no_new_version))
+//                    return
+//                }
+//                showUpdateDialog(data)
+//            }
+//
+//            override fun onFailed(msg: String) {
+//                if (showSnack) {
+//                    showSnack(getString(R.string.check_update_failed))
+//                }
+//            }
+//        })
     }
 
     private fun showUpdateDialog(data: VersionInfo) = AlertDialog.Builder(this)
