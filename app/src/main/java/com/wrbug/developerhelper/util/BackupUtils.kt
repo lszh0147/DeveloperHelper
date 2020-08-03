@@ -10,19 +10,19 @@ import java.io.File
 
 object BackupUtils {
     private val backupDir: File by lazy {
-        val file = File(Environment.getExternalStorageDirectory(), "com.wrbug.developerHelper/backup")
+        val file = File(Environment.getExternalStorageDirectory(), "Android/AppData/DevHelper/backup")
         if (file.exists().not()) {
             file.mkdirs()
         }
         file
     }
 
-    fun backupApk(packageName: String, apkPath: String, fileName: String): Uri? {
+    fun backupApk(packageName: String, apkPath: String, fileName: String): Boolean {
         val apkDir = File(backupDir, "apks/$packageName/$fileName")
         if (ShellManager.cpFile(apkPath, apkDir.absolutePath)) {
-            return apkDir.toUri(BaseApp.instance)
+            return true
         }
-        return null
+        return false
     }
 
     fun backupAppData(packageName: String, dataDir: String): File? {

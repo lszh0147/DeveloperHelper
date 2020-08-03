@@ -70,9 +70,9 @@
     <string name="confirm_stop_app">是否停止该应用？</string>
     <string name="confirm_restart_app">是否重启该应用？</string>
     <string name="restart_failed">重启失败</string>
-    <string name="backup_success_msg">备份成功，文件已备份到内部存储下com.wrbug.developerHelper目录中</string>
+    <string name="backup_success_msg">备份成功，文件已备份到内部存储下 Android/AppData/DevHelper 目录中</string>
     <string name="backup_failed">备份失败</string>
-    <string name="backup_success_and_share_msg">备份成功，文件已备份到内部存储下com.wrbug.developerHelper目录中，是否立即分享给好友？</string>
+    <string name="backup_success_and_share_msg">备份成功，文件已备份到内部存储下 Android/AppData/DevHelper 目录中</string>
     <string name="share_failed">分享失败</string>
     <string name="export_dex_data">导出脱壳数据</string>
     <string name="packing_files">正在打包文件</string>

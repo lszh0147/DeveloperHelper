@@ -190,13 +190,16 @@ class AppSettingView : ScrollView {
                 BackupUtils.backupAppData(applicationInfo.packageName, applicationInfo.dataDir)
             if (backupAppData == null) {
                 showToast(context.getString(R.string.backup_failed))
-                return
-            }
-            if (context !is BaseActivity) {
+
+            }else{
                 showToast(context.getString(R.string.backup_success_msg))
-                return
             }
-            showShareDataNotice(backupAppData)
+            return
+//            if (context !is BaseActivity) {
+//                showToast(context.getString(R.string.backup_success_msg))
+//                return
+//            }
+//            showShareDataNotice(backupAppData)
         }
     }
 
@@ -236,46 +239,46 @@ class AppSettingView : ScrollView {
             return
         }
         apkInfo?.apply {
-            val uri = BackupUtils.backupApk(
+            val result = BackupUtils.backupApk(
                 applicationInfo.packageName,
                 applicationInfo.publicSourceDir,
                 "${getAppName()}_${packageInfo.versionName}.apk"
             )
-            if (uri == null) {
+            if (!result) {
                 showToast(context.getString(R.string.backup_failed))
                 return
             }
-            if (context !is BaseActivity) {
+            if (result) {
                 showToast(context.getString(R.string.backup_success_msg))
                 return
             }
-            showShareApkDialog(uri)
+//            showShareApkDialog(result)
 
         }
     }
 
-    private fun showShareApkDialog(uri: Uri) {
-        showNotice(
-            context.getString(R.string.backup_success_and_share_msg),
-            DialogInterface.OnClickListener { _, _ ->
-                (context as BaseActivity).requestPermission(arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ),
-                    object : BaseActivity.PermissionCallback() {
-                        override fun granted() {
-                            activityFinish()
-                            Share2.Builder(context as Activity)
-                                .setContentType(ShareContentType.FILE)
-                                .setShareFileUri(uri)
-                                .setOnActivityResult(10)
-                                .build()
-                                .shareBySystem()
-                        }
-
-                    })
-
-            })
+    private fun showShareApkDialog(result: Boolean) {
+//        showNotice(
+//            context.getString(R.string.backup_success_and_share_msg),
+//            DialogInterface.OnClickListener { _, _ ->
+//                (context as BaseActivity).requestPermission(arrayOf(
+//                    Manifest.permission.READ_EXTERNAL_STORAGE,
+//                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                ),
+//                    object : BaseActivity.PermissionCallback() {
+//                        override fun granted() {
+//                            activityFinish()
+//                            Share2.Builder(context as Activity)
+//                                .setContentType(ShareContentType.FILE)
+//                                .setShareFileUri(uri)
+//                                .setOnActivityResult(10)
+//                                .build()
+//                                .shareBySystem()
+//                        }
+//
+//                    })
+//
+//            })
     }
 
     private fun checkRoot(): Boolean {

@@ -9,11 +9,7 @@ android {
         checkReleaseBuilds false
         abortOnError false
     }
-    if (isSignFileValid()) {
-        signingConfigs {
-            releaseConfig
-        }
-    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -30,16 +26,25 @@ android {
             abiFilters "armeabi-v7a", "arm64-v8a"
         }
     }
-    buildTypes {
-        debug {
-            versionNameSuffix "-debug"
-            if (isSignFileValid()) {
-                signingConfig signingConfigs.releaseConfig
-            }
+    signingConfigs {
+        release {
+            storeFile file("TestKey.jks")
+            storePassword "123321"
+            keyAlias "Test"
+            keyPassword "123321"
         }
+
+    }
+
+    buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.release
         }
     }
     dataBinding {
@@ -75,29 +80,4 @@ dependencies {
 }
 kapt {
     generateStubs = true
-}
-
-
-Properties props = new Properties()
-def propFile = file('../signing.properties')
-if (propFile.canRead()) {
-    props.load(new FileInputStream(propFile))
-    if (props != null &&
-            props.containsKey('SIGN_FILE') && props.containsKey('SIGN_PASSWORD') &&
-            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
-        android.signingConfigs.releaseConfig.storeFile = file(props['SIGN_FILE'])
-        android.signingConfigs.releaseConfig.storePassword = props['SIGN_PASSWORD']
-        android.signingConfigs.releaseConfig.keyAlias = props['KEY_ALIAS']
-        android.signingConfigs.releaseConfig.keyPassword = props['KEY_PASSWORD']
-    } else {
-        println 'release build not found signing properties'
-        android.buildTypes.release.signingConfig = null
-    }
-} else {
-    println 'release build not found signing file'
-    android.buildTypes.release.signingConfig = null
-}
-
-def isSignFileValid() {
-    return file('../signing.properties').canRead()
 }
