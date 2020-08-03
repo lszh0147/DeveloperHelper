@@ -6,8 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'//kapt 插件
 android {
     lintOptions {
-        checkReleaseBuilds false
-        abortOnError false
+        checkReleaseBuilds false //在打包Release版本的时候进行检测，这里就直接关掉了，这样即使有报错也不会停止打包了。
+        abortOnError false  // 如果为 true，则当lint发现错误时停止 gradle构建
     }
 
     compileOptions {
@@ -38,6 +38,9 @@ android {
 
     buildTypes {
         release {
+//            shrinkResources true  //删除没有用到的资源，如果apk动态读取资源，未声明使用某资源，可能出错
+//            zipAlignEnabled true  //zipalign是Android SDK中的工具，它能够对打包的应用程序进行优化。
+//            minifyEnabled true   //去掉未使用的方法和类
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
