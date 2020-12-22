@@ -9,7 +9,11 @@ android {
         checkReleaseBuilds false //在打包Release版本的时候进行检测，这里就直接关掉了，这样即使有报错也不会停止打包了。
         abortOnError false  // 如果为 true，则当lint发现错误时停止 gradle构建
     }
-
+    if (isSignFileValid()) {
+        signingConfigs {
+            releaseConfig
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -83,4 +87,29 @@ dependencies {
 }
 kapt {
     generateStubs = true
+}
+
+
+Properties props = new Properties()
+def propFile = file('../signing.properties')
+if (propFile.canRead()) {
+    props.load(new FileInputStream(propFile))
+    if (props != null &&
+            props.containsKey('SIGN_FILE') && props.containsKey('SIGN_PASSWORD') &&
+            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+        android.signingConfigs.releaseConfig.storeFile = file(props['SIGN_FILE'])
+        android.signingConfigs.releaseConfig.storePassword = props['SIGN_PASSWORD']
+        android.signingConfigs.releaseConfig.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.releaseConfig.keyPassword = props['KEY_PASSWORD']
+    } else {
+        println 'release build not found signing properties'
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    println 'release build not found signing file'
+    android.buildTypes.release.signingConfig = null
+}
+
+def isSignFileValid() {
+    return file('../signing.properties').canRead()
 }
